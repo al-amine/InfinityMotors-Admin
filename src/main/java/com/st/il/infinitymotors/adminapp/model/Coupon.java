@@ -22,5 +22,36 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "tbl_coupon")
 public class Coupon {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer couponId;
+	
+	@Column(name="percentage")
+	Integer percentage;
 
+	public Coupon() {}
+	
+	public Coupon(Integer couponId, Integer percentage) {
+		super();
+		this.couponId = couponId;
+		this.percentage = percentage;
+	}
+
+	public Integer getCouponId() {
+		return couponId;
+	}
+
+	public void setCouponId(Integer couponId) {
+		this.couponId = couponId;
+	}
+
+	public Integer getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(Integer percentage) {
+		this.percentage = percentage;
+	}
+	
 }
