@@ -1,4 +1,4 @@
-package com.st.il.infinitymotors.exception;
+package com.st.il.infinitymotors.adminapp.exception;
 
 public class AdminException {
 

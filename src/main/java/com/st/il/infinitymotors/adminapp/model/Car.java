@@ -1,4 +1,4 @@
-package com.st.il.infinitymotors.model;
+package com.st.il.infinitymotors.adminapp.model;
 
 
 import javax.persistence.Column;
@@ -23,6 +23,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "tbl_car")
 public class Car {
+	
 	
 
 

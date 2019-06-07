@@ -1,4 +1,4 @@
-package com.st.il.infinitymotors.utils;
+package com.st.il.infinitymotors.adminapp.utils;
 
 public class AdminUtil {
 

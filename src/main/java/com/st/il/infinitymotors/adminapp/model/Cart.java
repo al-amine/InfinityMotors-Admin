@@ -1,4 +1,4 @@
-package com.st.il.infinitymotors.model;
+package com.st.il.infinitymotors.adminapp.model;
 
 
 import javax.persistence.Column;
