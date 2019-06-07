@@ -11,6 +11,6 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class AdminostratorService {
+public class AdministratorService {
 
 }
