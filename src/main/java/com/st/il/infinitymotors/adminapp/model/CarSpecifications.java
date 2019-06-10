@@ -6,12 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 /**
  * A car in a the database.
@@ -24,43 +20,48 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "tbl_carspecs")
 public class CarSpecifications {
 	
+	/**
+	 * The ID number used to refer to this credit card in the database.
+	 */
 	@Id
-	Integer carId;
+	@Column(name = "carspecId")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer carspecId;
 	
 	@Column(name="engine")
-	String engine;
+	private String engine;
 	
 	@Column(name="transmission")
-	String transmission;
+	private String transmission;
 	
 	@Column(name="color")
-	String color;
+	private String color;
 	
 	@Column(name="horsepower")
-	String horsepower;
+	private int horsepower;
 	
 	@Column(name="weightLBS")
-	String weightLBS;
-
-	public CarSpecifications() {}
+	private int weightLBS;
 	
-	public CarSpecifications(int carId, String engine, String transmission, String color, String horsepower,
-			String weightLBS) {
-		super();
-		this.carId = carId;
-		this.engine = engine;
-		this.transmission = transmission;
-		this.color = color;
-		this.horsepower = horsepower;
-		this.weightLBS = weightLBS;
+	@Column(name="heightIN")
+	private int heightIN;
+	
+	@Column(name="lenghtIN")
+	private int lenghtIN;
+	
+	@Column(name="widthIN")
+	private int widthIN;
+	
+	/**
+	 * The Getters and Setters for all the parameters.
+	 */
+
+	public Integer getCarspecId() {
+		return carspecId;
 	}
 
-	public Integer getCarId() {
-		return carId;
-	}
-
-	public void setCarId(Integer carId) {
-		this.carId = carId;
+	public void setCarspecId(Integer carspecId) {
+		this.carspecId = carspecId;
 	}
 
 	public String getEngine() {
@@ -87,21 +88,99 @@ public class CarSpecifications {
 		this.color = color;
 	}
 
-	public String getHorsepower() {
+	public int getHorsepower() {
 		return horsepower;
 	}
 
-	public void setHorsepower(String horsepower) {
+	public void setHorsepower(int horsepower) {
 		this.horsepower = horsepower;
 	}
 
-	public String getWeightLBS() {
+	public int getWeightLBS() {
 		return weightLBS;
 	}
 
-	public void setWeightLBS(String weightLBS) {
+	public void setWeightLBS(int weightLBS) {
 		this.weightLBS = weightLBS;
 	}
+
+	public int getHeightIN() {
+		return heightIN;
+	}
+
+	public void setHeightIN(int heightIN) {
+		this.heightIN = heightIN;
+	}
+
+	public int getLenghtIN() {
+		return lenghtIN;
+	}
+
+	public void setLenghtIN(int lenghtIN) {
+		this.lenghtIN = lenghtIN;
+	}
+
+	public int getWidthIN() {
+		return widthIN;
+	}
+
+	public void setWidthIN(int widthIN) {
+		this.widthIN = widthIN;
+	}
+
+	public CarSpecifications() {
+		
+	}
+
+	public CarSpecifications(Integer carspecId) {
+		this.carspecId = carspecId;
+	}
+
+	public CarSpecifications(Integer carspecId, String engine, String transmission, String color, int horsepower,
+			int weightLBS, int heightIN, int lenghtIN, int widthIN) {
+		this.carspecId = carspecId;
+		this.engine = engine;
+		this.transmission = transmission;
+		this.color = color;
+		this.horsepower = horsepower;
+		this.weightLBS = weightLBS;
+		this.heightIN = heightIN;
+		this.lenghtIN = lenghtIN;
+		this.widthIN = widthIN;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((carspecId == null) ? 0 : carspecId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CarSpecifications other = (CarSpecifications) obj;
+		if (carspecId == null) {
+			if (other.carspecId != null)
+				return false;
+		} else if (!carspecId.equals(other.carspecId))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CarSpecifications [carspecId=" + carspecId + ", engine=" + engine + ", transmission=" + transmission
+				+ ", color=" + color + ", horsepower=" + horsepower + ", weightLBS=" + weightLBS + ", heightIN="
+				+ heightIN + ", lenghtIN=" + lenghtIN + ", widthIN=" + widthIN + "]";
+	}
+	
 	
 	
 }

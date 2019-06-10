@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
@@ -24,7 +24,11 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "tbl_car")
 public class Car {
 	
+	/**
+	 * The ID number used to refer to this car in the database.
+	 */
 	@Id
+	@Column(name = "carId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer carId;
 	
@@ -46,8 +50,20 @@ public class Car {
 	@Column(name="vinnumber")
 	private String vinNumber;
 	
+	@OneToOne
+	@JoinColumn(name = "carspecId")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private CarSpecifications specs;
-
+    
+	@Column(name="diagonalview")
+	private String diagonalview;
+	
+	@Column(name="sideview")
+	private String sideview;
+	
+	@Column(name="interiorview")
+	private String interiorview;
+	
 	public Integer getCarId() {
 		return carId;
 	}
@@ -111,12 +127,42 @@ public class Car {
 	public void setSpecs(CarSpecifications specs) {
 		this.specs = specs;
 	}
-
-	public Car() {}
 	
+	public String getDiagonalview() {
+		return diagonalview;
+	}
+
+	public void setDiagonalview(String diagonalview) {
+		this.diagonalview = diagonalview;
+	}
+
+	public String getSideview() {
+		return sideview;
+	}
+
+	public void setSideview(String sideview) {
+		this.sideview = sideview;
+	}
+
+	public String getInteriorview() {
+		return interiorview;
+	}
+
+	public void setInteriorview(String interiorview) {
+		this.interiorview = interiorview;
+	}
+
+	public Car() {
+		
+	}
+	
+	
+	public Car(Integer carId) {
+		this.carId = carId;
+	}
+
 	public Car(Integer carId, String type, String make, String model, Integer year, Integer price, String vinNumber,
-			CarSpecifications specs) {
-		super();
+			CarSpecifications specs, String diagonalview, String sideview, String interiorview) {
 		this.carId = carId;
 		this.type = type;
 		this.make = make;
@@ -125,8 +171,42 @@ public class Car {
 		this.price = price;
 		this.vinNumber = vinNumber;
 		this.specs = specs;
+		this.diagonalview = diagonalview;
+		this.sideview = sideview;
+		this.interiorview = interiorview;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((carId == null) ? 0 : carId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Car other = (Car) obj;
+		if (carId == null) {
+			if (other.carId != null)
+				return false;
+		} else if (!carId.equals(other.carId))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Car [carId=" + carId + ", type=" + type + ", make=" + make + ", model=" + model + ", year=" + year
+				+ ", price=" + price + ", vinNumber=" + vinNumber + ", specs=" + specs + "]";
 	}
 	
 	
-
+	
 }
