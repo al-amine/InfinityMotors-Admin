@@ -19,6 +19,7 @@ import org.hibernate.annotations.OnDeleteAction;
  * @author Tonny Huang
  * @author Vien Yeung
  * @author Al Amine
+ * @author Henry Cho
  */
 @Entity
 @Table(name = "tbl_car")
@@ -53,7 +54,7 @@ public class Car {
 	@OneToOne
 	@JoinColumn(name = "carspecId")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private CarSpecifications specs;
+	private CarSpecifications carspecId;
     
 	@Column(name="diagonalview")
 	private String diagonalview;
@@ -63,6 +64,9 @@ public class Car {
 	
 	@Column(name="interiorview")
 	private String interiorview;
+	
+	@Column(name="numAvailable")
+	private Integer numAvailable;
 	
 	public Integer getCarId() {
 		return carId;
@@ -121,11 +125,11 @@ public class Car {
 	}
 
 	public CarSpecifications getSpecs() {
-		return specs;
+		return carspecId;
 	}
 
 	public void setSpecs(CarSpecifications specs) {
-		this.specs = specs;
+		this.carspecId = specs;
 	}
 	
 	public String getDiagonalview() {
@@ -151,6 +155,14 @@ public class Car {
 	public void setInteriorview(String interiorview) {
 		this.interiorview = interiorview;
 	}
+	
+	public Integer getNumAvailable() {
+		return numAvailable;
+	}
+	
+	public void setNumAvailable(int numAvailable) {
+		this.numAvailable = numAvailable;
+	}
 
 	public Car() {
 		
@@ -162,7 +174,7 @@ public class Car {
 	}
 
 	public Car(Integer carId, String type, String make, String model, Integer year, Integer price, String vinNumber,
-			CarSpecifications specs, String diagonalview, String sideview, String interiorview) {
+			CarSpecifications specs, String diagonalview, String sideview, String interiorview, int numAvailable) {
 		this.carId = carId;
 		this.type = type;
 		this.make = make;
@@ -170,10 +182,11 @@ public class Car {
 		this.year = year;
 		this.price = price;
 		this.vinNumber = vinNumber;
-		this.specs = specs;
+		this.carspecId = specs;
 		this.diagonalview = diagonalview;
 		this.sideview = sideview;
 		this.interiorview = interiorview;
+		this.numAvailable = numAvailable;
 	}
 
 	@Override
@@ -204,7 +217,7 @@ public class Car {
 	@Override
 	public String toString() {
 		return "Car [carId=" + carId + ", type=" + type + ", make=" + make + ", model=" + model + ", year=" + year
-				+ ", price=" + price + ", vinNumber=" + vinNumber + ", specs=" + specs + "]";
+				+ ", price=" + price + ", vinNumber=" + vinNumber + ", specs=" + carspecId + ", numAvailable" + numAvailable + "]";
 	}
 	
 	
