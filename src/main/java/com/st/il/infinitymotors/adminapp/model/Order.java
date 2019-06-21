@@ -1,5 +1,7 @@
 package com.st.il.infinitymotors.adminapp.model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,11 +16,12 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 /**
- * A car in a the database.
+ * An order.
  *
  * @author Tonny Huang
  * @author Vien Yeung
  * @author Al Amine
+ * @author Henry Cho
  */
 @Entity
 @Table(name = "tbl_order")
@@ -58,7 +61,7 @@ public class Order {
 	 * the purchase date of the order.
 	 */
 	@Column
-	private String purchaseDate;
+	private LocalDate purchaseDate;
 	
 	/**
 	 * The Getters and Setters for all the parameters.
@@ -104,11 +107,11 @@ public class Order {
 		this.totalPrice = totalPrice;
 	}
 	
-	public String getPurchaseDate() {
+	public LocalDate getPurchaseDate() {
 		return purchaseDate;
 	}
 	
-	public void setPurchaseDate(String purchaseDate) {
+	public void setPurchaseDate(LocalDate purchaseDate) {
 		this.purchaseDate = purchaseDate;
 	}
 
@@ -119,7 +122,7 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public Order(int orderId, User client, Car car1, Car car2, int totalPrice, String purchaseDate) {
+	public Order(int orderId, User client, Car car1, Car car2, int totalPrice, LocalDate purchaseDate) {
 		this.orderId = orderId;
 		this.client = client;
 		this.car1 = car1;

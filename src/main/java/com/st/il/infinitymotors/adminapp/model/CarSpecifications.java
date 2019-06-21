@@ -10,11 +10,12 @@ import javax.persistence.Table;
 
 
 /**
- * A car in a the database.
+ * Car specificiations
  *
  * @author Tonny Huang
  * @author Vien Yeung
  * @author Al Amine
+ * @author Henry Cho
  */
 @Entity
 @Table(name = "tbl_carspecs")
@@ -46,8 +47,8 @@ public class CarSpecifications {
 	@Column(name="heightIN")
 	private int heightIN;
 	
-	@Column(name="lenghtIN")
-	private int lenghtIN;
+	@Column(name="lengthIN")
+	private int lengthIN;
 	
 	@Column(name="widthIN")
 	private int widthIN;
@@ -113,11 +114,11 @@ public class CarSpecifications {
 	}
 
 	public int getLenghtIN() {
-		return lenghtIN;
+		return lengthIN;
 	}
 
-	public void setLenghtIN(int lenghtIN) {
-		this.lenghtIN = lenghtIN;
+	public void setLenghtIN(int lengthIN) {
+		this.lengthIN = lengthIN;
 	}
 
 	public int getWidthIN() {
@@ -137,7 +138,7 @@ public class CarSpecifications {
 	}
 
 	public CarSpecifications(Integer carspecId, String engine, String transmission, String color, int horsepower,
-			int weightLBS, int heightIN, int lenghtIN, int widthIN) {
+			int weightLBS, int heightIN, int lengthIN, int widthIN) {
 		this.carspecId = carspecId;
 		this.engine = engine;
 		this.transmission = transmission;
@@ -145,7 +146,7 @@ public class CarSpecifications {
 		this.horsepower = horsepower;
 		this.weightLBS = weightLBS;
 		this.heightIN = heightIN;
-		this.lenghtIN = lenghtIN;
+		this.lengthIN = lengthIN;
 		this.widthIN = widthIN;
 	}
 
@@ -178,7 +179,7 @@ public class CarSpecifications {
 	public String toString() {
 		return "CarSpecifications [carspecId=" + carspecId + ", engine=" + engine + ", transmission=" + transmission
 				+ ", color=" + color + ", horsepower=" + horsepower + ", weightLBS=" + weightLBS + ", heightIN="
-				+ heightIN + ", lenghtIN=" + lenghtIN + ", widthIN=" + widthIN + "]";
+				+ heightIN + ", lenghtIN=" + lengthIN + ", widthIN=" + widthIN + "]";
 	}
 	
 	
