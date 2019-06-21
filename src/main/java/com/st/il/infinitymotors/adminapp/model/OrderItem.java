@@ -13,23 +13,24 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 /**
- * A car in a the database.
+ * An item in OrderItem.
  *
  * @author Tonny Huang
  * @author Vien Yeung
  * @author Al Amine
+ * @author Henry Cho
  */
 @Entity
-@Table(name = "tbl_orderItem")
-public class OrderItemId {
+@Table(name = "tbl_orderitem")
+public class OrderItem {
 	
 	/**
-	 * The ID number used to refer to this orderItem in the database.
+	 * The ID number used to refer to this orderitem in the database.
 	 */
 	@Id
-	@Column(name = "orderItemId")
+	@Column(name = "orderitemId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer orderItemId;
+	private Integer orderitemId;
 	
 	@ManyToOne
 	@JoinColumn(name = "orderId")
@@ -44,11 +45,11 @@ public class OrderItemId {
 	 * the Getters and Setters of the Class
 	 */
 	public Integer getOrderItemId() {
-		return orderItemId;
+		return orderitemId;
 	}
 
-	public void setOrderItemId(Integer orderItemId) {
-		this.orderItemId = orderItemId;
+	public void setOrderItemId(Integer orderitemId) {
+		this.orderitemId = orderitemId;
 	}
 
 	public Order getOrder() {
@@ -70,16 +71,16 @@ public class OrderItemId {
 	 * the Constructors of the Class
 	 */
 
-	public OrderItemId() {
+	public OrderItem() {
 		
 	}
 
-	public OrderItemId(Integer orderItemId) {
-		this.orderItemId = orderItemId;
+	public OrderItem(Integer orderitemId) {
+		this.orderitemId = orderitemId;
 	}
 
-	public OrderItemId(Integer orderItemId, Order order, Car car) {
-		this.orderItemId = orderItemId;
+	public OrderItem(Integer orderitemId, Order order, Car car) {
+		this.orderitemId = orderitemId;
 		this.order = order;
 		this.car = car;
 	}
@@ -88,7 +89,7 @@ public class OrderItemId {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((orderItemId == null) ? 0 : orderItemId.hashCode());
+		result = prime * result + ((orderitemId == null) ? 0 : orderitemId.hashCode());
 		return result;
 	}
 
@@ -100,18 +101,18 @@ public class OrderItemId {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		OrderItemId other = (OrderItemId) obj;
-		if (orderItemId == null) {
-			if (other.orderItemId != null)
+		OrderItem other = (OrderItem) obj;
+		if (orderitemId == null) {
+			if (other.orderitemId != null)
 				return false;
-		} else if (!orderItemId.equals(other.orderItemId))
+		} else if (!orderitemId.equals(other.orderitemId))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "OrderItemId [orderItemId=" + orderItemId + ", order=" + order + ", car=" + car + "]";
+		return "OrderitemId [orderitemId=" + orderitemId + ", order=" + order + ", car=" + car + "]";
 	}
 
 	

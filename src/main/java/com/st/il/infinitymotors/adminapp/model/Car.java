@@ -48,22 +48,19 @@ public class Car {
 	@Column(name="price")
 	private Integer price;
 	
-	@Column(name="vinnumber")
-	private String vinNumber;
-	
 	@OneToOne
 	@JoinColumn(name = "carspecId")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private CarSpecifications carspecId;
     
-	@Column(name="diagonalview")
-	private String diagonalview;
+	@Column(name="diagonalView")
+	private String diagonalView;
 	
-	@Column(name="sideview")
-	private String sideview;
+	@Column(name="sideView")
+	private String sideView;
 	
-	@Column(name="interiorview")
-	private String interiorview;
+	@Column(name="interiorView")
+	private String interiorView;
 	
 	@Column(name="numAvailable")
 	private Integer numAvailable;
@@ -116,14 +113,6 @@ public class Car {
 		this.price = price;
 	}
 
-	public String getVinNumber() {
-		return vinNumber;
-	}
-
-	public void setVinNumber(String vinNumber) {
-		this.vinNumber = vinNumber;
-	}
-
 	public CarSpecifications getSpecs() {
 		return carspecId;
 	}
@@ -132,28 +121,28 @@ public class Car {
 		this.carspecId = specs;
 	}
 	
-	public String getDiagonalview() {
-		return diagonalview;
+	public String getDiagonalView() {
+		return diagonalView;
 	}
 
-	public void setDiagonalview(String diagonalview) {
-		this.diagonalview = diagonalview;
+	public void setDiagonalView(String diagonalView) {
+		this.diagonalView = diagonalView;
 	}
 
-	public String getSideview() {
-		return sideview;
+	public String getSideView() {
+		return sideView;
 	}
 
-	public void setSideview(String sideview) {
-		this.sideview = sideview;
+	public void setSideView(String sideView) {
+		this.sideView = sideView;
 	}
 
-	public String getInteriorview() {
-		return interiorview;
+	public String getInteriorView() {
+		return interiorView;
 	}
 
-	public void setInteriorview(String interiorview) {
-		this.interiorview = interiorview;
+	public void setInteriorView(String interiorView) {
+		this.interiorView = interiorView;
 	}
 	
 	public Integer getNumAvailable() {
@@ -173,19 +162,18 @@ public class Car {
 		this.carId = carId;
 	}
 
-	public Car(Integer carId, String type, String make, String model, Integer year, Integer price, String vinNumber,
-			CarSpecifications specs, String diagonalview, String sideview, String interiorview, int numAvailable) {
+	public Car(Integer carId, String type, String make, String model, Integer year, Integer price,
+			CarSpecifications specs, String diagonalView, String sideView, String interiorView, int numAvailable) {
 		this.carId = carId;
 		this.type = type;
 		this.make = make;
 		this.model = model;
 		this.year = year;
 		this.price = price;
-		this.vinNumber = vinNumber;
 		this.carspecId = specs;
-		this.diagonalview = diagonalview;
-		this.sideview = sideview;
-		this.interiorview = interiorview;
+		this.diagonalView = diagonalView;
+		this.sideView = sideView;
+		this.interiorView = interiorView;
 		this.numAvailable = numAvailable;
 	}
 
@@ -217,7 +205,7 @@ public class Car {
 	@Override
 	public String toString() {
 		return "Car [carId=" + carId + ", type=" + type + ", make=" + make + ", model=" + model + ", year=" + year
-				+ ", price=" + price + ", vinNumber=" + vinNumber + ", specs=" + carspecId + ", numAvailable" + numAvailable + "]";
+				+ ", price=" + price + ", specs=" + carspecId + ", numAvailable" + numAvailable + "]";
 	}
 	
 	

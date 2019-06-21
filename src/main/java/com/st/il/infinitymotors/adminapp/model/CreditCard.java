@@ -15,11 +15,12 @@ import org.hibernate.annotations.OnDeleteAction;
 
 
 /**
- * A car in a the database.
+ * A creditcard the database.
  *
  * @author Tonny Huang
  * @author Vien Yeung
  * @author Al Amine
+ * @author Henry cho
  */
 @Entity
 @Table(name = "tbl_creditcard")
@@ -28,9 +29,9 @@ public class CreditCard {
 	 * The ID number used to refer to this credit card in the database.
 	 */
 	@Id
-	@Column(name = "creditCardNum")
+	@Column(name = "creditcardNum")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int creditCardNum;
+	private int creditcardNum;
 	/**
 	 * The Owner of the credit card.
 	 */
@@ -54,11 +55,11 @@ public class CreditCard {
 	 */
 	
 	public int getCreditCardNum() {
-		return creditCardNum;
+		return creditcardNum;
 	}
 	
-	public void setCreditCardNum(int creditCardNum) {
-		this.creditCardNum = creditCardNum;
+	public void setCreditCardNum(int creditcardNum) {
+		this.creditcardNum = creditcardNum;
 	}
 	
 	public User getOwner() {
@@ -91,19 +92,19 @@ public class CreditCard {
 
 	}
 
-	public CreditCard(int creditCardNum) {
-		this.creditCardNum = creditCardNum;
+	public CreditCard(int creditcardNum) {
+		this.creditcardNum = creditcardNum;
 	}
 
-	public CreditCard(int creditCardNum, int csv, String expirationDate) {
-		this.creditCardNum = creditCardNum;
+	public CreditCard(int creditcardNum, int csv, String expirationDate) {
+		this.creditcardNum = creditcardNum;
 		this.csv = csv;
 		this.expirationDate = expirationDate;
 	}
 	
-	public CreditCard(int creditCardNum, User owner, int csv, String expirationDate) {
+	public CreditCard(int creditcardNum, User owner, int csv, String expirationDate) {
 		super();
-		this.creditCardNum = creditCardNum;
+		this.creditcardNum = creditcardNum;
 		this.owner = owner;
 		this.csv = csv;
 		this.expirationDate = expirationDate;
@@ -113,7 +114,7 @@ public class CreditCard {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + creditCardNum;
+		result = prime * result + creditcardNum;
 		return result;
 	}
 
@@ -126,17 +127,14 @@ public class CreditCard {
 		if (getClass() != obj.getClass())
 			return false;
 		CreditCard other = (CreditCard) obj;
-		if (creditCardNum != other.creditCardNum)
+		if (creditcardNum != other.creditcardNum)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "CreditCard [creditCardNum=" + creditCardNum + ", owner=" + owner + ", csv=" + csv + ", expirationDate="
+		return "CreditCard [creditcardNum=" + creditcardNum + ", owner=" + owner + ", csv=" + csv + ", expirationDate="
 				+ expirationDate + "]";
 	}
-	
-
-	
 }
