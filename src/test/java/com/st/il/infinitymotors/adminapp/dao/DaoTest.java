@@ -16,7 +16,6 @@ import com.st.il.infinitymotors.adminapp.model.Car;
 import com.st.il.infinitymotors.adminapp.model.Order;
 import com.st.il.infinitymotors.adminapp.model.OrderItem;
 import com.st.il.infinitymotors.adminapp.model.User;
-import com.st.il.infinitymotors.adminapp.service.XAdministratorService;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
