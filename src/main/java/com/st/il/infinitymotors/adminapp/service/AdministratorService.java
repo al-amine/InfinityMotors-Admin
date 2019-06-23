@@ -1,7 +1,6 @@
 package com.st.il.infinitymotors.adminapp.service;
 
 import java.time.LocalDate;
-
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -189,8 +188,10 @@ public class AdministratorService {
 	}
 	
 	//TODO: AlreadyExistExceptions should be replaced with new exceptions
-	@Transactional
-	public Order addOrder(OrderDTO orderDTO) throws BadRequestException, AlreadyExistsException {
+	@Transactional(rollbackFor={AlreadyExistsException.class,
+								BadRequestException.class,
+								NotFoundException.class})
+	public Order addOrder(OrderDTO orderDTO) throws BadRequestException, AlreadyExistsException, NotFoundException {
 		Order order = new Order();
 		try {
 			order.setClient(userDao.findById(orderDTO.getUserId()).get());
@@ -212,10 +213,10 @@ public class AdministratorService {
 				found.setNumAvailable(found.getNumAvailable() - 1);
 				found = carDao.save(found);
 				if(found.getNumAvailable() < 0)
-					throw new AlreadyExistsException("A car you ar attempting to order has ran out.");
+					throw new NotFoundException("A car you are attempting to order has ran out.");
 				item.setCar(found);
 			} catch(NoSuchElementException e) {
-				throw new AlreadyExistsException("A car you are attempting to order does not exist.");
+				throw new NotFoundException("We do not sell the car you are attempting to order.");
 			}
 			order.addOrderItem(orderItemDao.save(item));
 		}

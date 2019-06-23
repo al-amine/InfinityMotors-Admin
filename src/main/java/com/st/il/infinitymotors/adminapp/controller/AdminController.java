@@ -128,7 +128,7 @@ public class AdminController {
 	
 	@PostMapping("/order")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Order addOrder(@RequestBody OrderDTO orderDTO) throws BadRequestException, AlreadyExistsException{
+	public Order addOrder(@RequestBody OrderDTO orderDTO) throws BadRequestException, AlreadyExistsException, NotFoundException{
 		Order order = service.addOrder(orderDTO);
 		return order;
 	}
