@@ -1,19 +1,24 @@
 package com.st.il.infinitymotors.adminapp.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * An order.
@@ -41,18 +46,6 @@ public class Order {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User client;
 	/**
-	 * The first Car in this Order
-	 */
-	@OneToOne
-	@JoinColumn(name = "carId1")
-	private Car car1;
-	/**
-	 * The second Car in this Order
-	 */
-	@OneToOne
-	@JoinColumn(name = "carId2")
-	private Car car2;
-	/**
 	 * the total price of the order.
 	 */
 	@Column
@@ -62,6 +55,11 @@ public class Order {
 	 */
 	@Column
 	private LocalDate purchaseDate;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy="order",
+			fetch = FetchType.EAGER)
+	private List<OrderItem> orderItems = new ArrayList();
 	
 	/**
 	 * The Getters and Setters for all the parameters.
@@ -83,22 +81,6 @@ public class Order {
 		this.client = client;
 	}
 	
-	public Car getCar1() {
-		return car1;
-	}
-	
-	public void setCar1(Car car1) {
-		this.car1 = car1;
-	}
-	
-	public Car getCar2() {
-		return car2;
-	}
-	
-	public void setCar2(Car car2) {
-		this.car2 = car2;
-	}
-	
 	public int getTotalPrice() {
 		return totalPrice;
 	}
@@ -114,6 +96,18 @@ public class Order {
 	public void setPurchaseDate(LocalDate purchaseDate) {
 		this.purchaseDate = purchaseDate;
 	}
+	
+	public List<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
+	}
+	
+	public void addOrderItem(OrderItem order) {
+		this.orderItems.add(order);
+	}
 
 	public Order() {
 	}
@@ -122,11 +116,9 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public Order(int orderId, User client, Car car1, Car car2, int totalPrice, LocalDate purchaseDate) {
+	public Order(int orderId, User client, int totalPrice, LocalDate purchaseDate) {
 		this.orderId = orderId;
 		this.client = client;
-		this.car1 = car1;
-		this.car2 = car2;
 		this.totalPrice = totalPrice;
 		this.purchaseDate = purchaseDate;
 	}
@@ -155,8 +147,8 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [orderId=" + orderId + ", client=" + client + ", car1=" + car1 + ", car2=" + car2
-				+ ", totalPrice=" + totalPrice + ", purchaseDate=" + purchaseDate + "]";
+		return "Order [orderId=" + orderId + ", client=" + client + ", car1=" + 
+				", totalPrice=" + totalPrice + ", purchaseDate=" + purchaseDate + "]";
 	}
 
 }

@@ -1,15 +1,23 @@
 package com.st.il.infinitymotors.adminapp.service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 import com.st.il.infinitymotors.adminapp.dao.CarDao;
 import com.st.il.infinitymotors.adminapp.dao.CarSpecificationsDao;
+import com.st.il.infinitymotors.adminapp.dao.OrderDao;
+import com.st.il.infinitymotors.adminapp.dao.OrderItemDao;
+import com.st.il.infinitymotors.adminapp.dao.UserDao;
+import com.st.il.infinitymotors.adminapp.exception.AlreadyExistsException;
+import com.st.il.infinitymotors.adminapp.exception.BadRequestException;
+import com.st.il.infinitymotors.adminapp.exception.NotFoundException;
 //import com.st.il.infinitymotors.adminapp.dao.CartDao;
 //import com.st.il.infinitymotors.adminapp.dao.CouponDao;
 //import com.st.il.infinitymotors.adminapp.dao.CreditCardDao;
@@ -18,6 +26,10 @@ import com.st.il.infinitymotors.adminapp.dao.CarSpecificationsDao;
 //import com.st.il.infinitymotors.adminapp.dao.UserDao;
 import com.st.il.infinitymotors.adminapp.model.Car;
 import com.st.il.infinitymotors.adminapp.model.CarSpecifications;
+import com.st.il.infinitymotors.adminapp.model.Order;
+import com.st.il.infinitymotors.adminapp.model.OrderDTO;
+import com.st.il.infinitymotors.adminapp.model.OrderItem;
+import com.st.il.infinitymotors.adminapp.model.User;
 
 
 
@@ -35,20 +47,19 @@ public class AdministratorService {
 	
 	@Autowired
 	private CarDao carDao;
+	
 	@Autowired
 	private CarSpecificationsDao carSpecificationsDao;
-//	@Autowired
-//	private CartDao cartDao;
-//	@Autowired
-//	private CouponDao couponDao;
-//	@Autowired
-//	private CreditCardDao creditCardDao;
-//	@Autowired
-//	private InventoryDao inventoryDao;
-//	@Autowired
-//	private OrderDao orderDao;
-//	@Autowired
-//	private UserDao userDao;
+	
+	@Autowired
+	private OrderDao orderDao;
+	
+	@Autowired
+	private UserDao userDao;
+	
+	@Autowired
+	private OrderItemDao orderItemDao;
+	
 	
 	
 	/* Car services */
@@ -105,7 +116,7 @@ public class AdministratorService {
 	
 	public boolean updateCar(Car car) {
 		Optional<Car> test = carDao.findById(car.getCarId());
-		if(test.isEmpty())
+		if(!test.isPresent())
 			return false;
 		else {
 			carSpecificationsDao.saveAndFlush(car.getSpecs());
@@ -148,5 +159,117 @@ public class AdministratorService {
 		}
 		else
 			return false;
+	}
+	
+	/**********************************
+	 Order Services 
+	 **********************************/
+	
+	public Order getOrder(Integer orderId) throws NotFoundException {
+		Order out = null;
+		try {
+			out = orderDao.findById(orderId).get();
+		} catch(NoSuchElementException e) {
+			throw new NotFoundException("Order with id=" + orderId +  "not found");
+		}
+		return out;
+	}
+	
+	public List<Order> getOrders(){
+		List<Order> out = orderDao.findAll();
+		for(int i = 0; i < out.size(); i++ ) {
+			 out.get(i).setOrderItems(orderItemDao.findAllByOrder(out.get(i).getOrderId()));
+		}
+		return out;
+	}
+	
+	public List<Order> getOrdersByUser(Integer userId){
+		return orderDao.findAllByUser(userId);
+	}
+	
+	//TODO: AlreadyExistExceptions should be replaced with new exceptions
+	@Transactional(rollbackFor={AlreadyExistsException.class,
+								BadRequestException.class,
+								NotFoundException.class})
+	public Order addOrder(OrderDTO orderDTO) throws BadRequestException, AlreadyExistsException, NotFoundException {
+		Order order = new Order();
+		try {
+			order.setClient(userDao.findById(orderDTO.getUserId()).get());
+			order.setPurchaseDate(LocalDate.parse(orderDTO.getPurchaseDate()));
+		} catch(NoSuchElementException e) {
+			throw new AlreadyExistsException("User does not exit.");
+		} catch(DateTimeParseException d) {
+			throw new BadRequestException("Date is malformed. Please use this format: YYYY-MM-DD");
+		}
+		order.setTotalPrice(0);
+		order = orderDao.save(order);
+		
+		for(int id: orderDTO.getOrderItems()) {
+			OrderItem item = new OrderItem();
+			item.setOrder(order);
+			try {
+				Car found = carDao.findById(id).get();
+				order.setTotalPrice(order.getTotalPrice() + found.getPrice());
+				found.setNumAvailable(found.getNumAvailable() - 1);
+				found = carDao.save(found);
+				if(found.getNumAvailable() < 0)
+					throw new NotFoundException("A car you are attempting to order has ran out.");
+				item.setCar(found);
+			} catch(NoSuchElementException e) {
+				throw new NotFoundException("We do not sell the car you are attempting to order.");
+			}
+			order.addOrderItem(orderItemDao.save(item));
+		}
+		return order;
+	}
+	
+	/**********************************
+	 User Services  
+	 **********************************/
+	public User getUser(Integer userId) throws NotFoundException {
+		User out = null;
+		try {
+			out = userDao.findById(userId).get();
+		} catch(NoSuchElementException e) {
+			throw new NotFoundException("User with id=" + userId + " not found");
+		}
+		return out;
+	}
+	
+	public User getUser(String username) throws NotFoundException {
+		User out = null;
+		try {
+			out = userDao.findByUsername(username).get();
+		} catch(NoSuchElementException e) {
+			throw new NotFoundException("User with username=" + username + " not found");
+		}
+		return out;
+	}
+	
+	public List<User> getAllUsers(){
+		return userDao.findAll();
+	}
+	
+	public User addUser(User user) throws AlreadyExistsException, BadRequestException {
+		if(userDao.findByUsername(user.getUsername()).isPresent())
+			throw new AlreadyExistsException("User with id=" + user.getUserId() + " not found");
+		if(user.getRole() != "customer" && user.getRole() != "admin")
+			throw new BadRequestException("Please enter a valid role: customer | admin");
+		user = userDao.save(user);
+		return user;
+	}
+	
+	public User updateUser(Integer userId, User user) throws NotFoundException, BadRequestException {
+		if(!userDao.findById(userId).isPresent())
+			throw new NotFoundException("Update failed. User with id=" + user.getUserId() + " not found");
+		if(user.getRole() != "customer" && user.getRole() != "admin")
+			throw new BadRequestException("Please enter a valid role: customer | admin");
+		return userDao.save(user);
+	}
+	
+	public void deleteUser(Integer userId) throws NotFoundException {
+		if(!userDao.findById(userId).isPresent())
+			throw new NotFoundException("Delete failed. User with id=" + userId + " not found");
+		userDao.deleteById(userId);
 	}
 }
